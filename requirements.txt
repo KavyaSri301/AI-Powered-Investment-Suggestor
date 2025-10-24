@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+openai
+yfinance
+kiteconnect
+pydantic
+python-jose[cryptography]  # for JWT
+requests
+azure-core
