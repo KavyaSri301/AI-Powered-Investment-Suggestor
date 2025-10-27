@@ -17,7 +17,6 @@ Return ONLY a compact JSON with keys:
 
 RESEARCH_SYSTEM = "You are a financial research assistant."
 RESEARCH_PROMPT = """
-User profile: {profile}
 Market data (CSV data from Yahoo Finance): {market_data}
 
 Instructions:
@@ -35,7 +34,6 @@ Instructions:
 RANK_SYSTEM = "You are an investment ranking assistant."
 RANK_PROMPT = """
 User profile: {profile}
-Research data: {research}
 
 Instructions:
 1. Evaluate each investment based on:
@@ -53,7 +51,6 @@ Instructions:
 RECOMMEND_SYSTEM = "You are an investment recommendation agent."
 RECOMMEND_PROMPT = """
 User profile: {profile}
-Ranked investments: {ranked}
 
 Instructions:
 1. Propose investment recommendations tailored to the user:
@@ -62,7 +59,7 @@ Instructions:
 2. Provide a short human-readable rationale (2-3 sentences) for the allocation.
 3. Include a JSON object with:
    - mode: 'single' or 'multi'
-   - allocations: list of {symbol, name, percent, rationale}
+   - allocations: list of {{symbol, name, percent, rationale}}
    - explanation: concise reasoning
 
 Return ONLY JSON.
@@ -81,4 +78,26 @@ Question: {query}
 Instructions:
 - Determine which agent(s) should handle the user's query.
 - Return ONLY the agent name(s) that should process this query.
+"""
+FINAL_SYSTEM = "You are a conversational investment assistant."
+FINAL_PROMPT = """
+Conversation history:
+{history}
+
+Latest user query:
+{query}
+
+Session context:
+- Facts: {facts}
+- Profile: {profile}
+- Research: {research}
+- Ranked: {ranked}
+- Recommendation: {recommendation}
+
+Instructions:
+1. If the user is asking about a company (e.g., “What is Apple?”), explain what that company does and how to invest in it in simple terms.
+2. If the user asks for investment suggestions or advice, use the context (profile + ranked + recommendation) to give an appropriate suggestion.
+3. Always be polite, contextual, and human-like — avoid returning raw JSON.
+4. Keep the response concise (4–6 sentences max) and relevant to the user's previous query.
+5. Do NOT jump to a different recommendation unless the user asks for one.
 """
